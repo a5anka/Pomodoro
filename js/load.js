@@ -3,6 +3,7 @@ var duration = 25;
 var pomoCount = 0;
 var working = false;
 var timerRunning = false;
+var notificationSupported = false;
 
 function get_time_difference(earlierDate,laterDate)
 {
@@ -36,6 +37,10 @@ function PlaySound(soundObj) {
 }
 
 function startstop(){
+    if (notificationSupported && Notification.permission != "granted") { 
+        window.Notifications.requestPermission();
+    }
+
     PlaySound('ding');
     document.getElementById('explanation').style.visibility = "hidden";
     var button = document.getElementById('startstop');
@@ -47,7 +52,7 @@ function startstop(){
         button.innerHTML = "Reset";
         button.setAttribute('class','btn btn-red');
         startWorking();
-    }else{
+    } else {
         document.getElementById('progress').style.visibility = "hidden";
         startTime = new Date();
         working = false;
@@ -68,17 +73,25 @@ function startWorking(){
     document.getElementById('progress_bar').setAttribute('class','ui-progress-bar warning ui-container transition');
     document.getElementById('timer').setAttribute('class','timer');
     document.getElementById('startstop').innerHTML = "Reset";
+
+    if (notificationSupported) {
+        new Notification("Pomodoro " + (pomoCount+1) + " started!");
+    }
 }
 function startBreak(){
     PlaySound('dingling');
+    if (notificationSupported) {
+        new Notification("Take a Break!");
+    }
+
     document.getElementById('minutes').innerHTML = "05";
     document.getElementById('seconds').innerHTML = "00";
     document.getElementById('startstop').innerHTML = "End break";
     startTime = new Date();
     duration = 5;
     if (pomoCount%4 == 0){
-        duration = 15;
-        document.getElementById('minutes').innerHTML = "15";
+        duration = 20;
+        document.getElementById('minutes').innerHTML = "20";
     }
 
     document.getElementById('progress_bar').setAttribute('class','ui-progress-bar ui-container transition');
@@ -121,5 +134,11 @@ function updateTime(){
 
 
 function loadjs(){
+    if (window.Notification) {
+        notificationSupported = true;
+    } else {
+        notificationSupported = false;
+    }
+
     updateTime();
 }
