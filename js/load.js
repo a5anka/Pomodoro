@@ -43,6 +43,12 @@ function startstop(){
 
     PlaySound('ding');
     document.getElementById('explanation').style.visibility = "hidden";
+
+    var iframes = document.getElementsByTagName('iframe');
+    for (var i = 0; i < iframes.length; i++) {
+      iframes[i].parentNode.removeChild(iframes[i]);
+    }
+
     var button = document.getElementById('startstop');
     var state = button.innerHTML;
     document.getElementById('timer').setAttribute('class','timer');

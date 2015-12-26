@@ -46,6 +46,13 @@ div.explain p{
 	padding-bottom:25px;
 	border-bottom:1px dotted rgba(0,0,0,0.3);
 }
+
+div.explain div#adunit {
+	border-top:1px dotted rgba(0,0,0,0.3);
+	margin-top:25px;
+	padding-top:25px;
+}
+
 div.step{
 	display:inline-block;
 	vertical-align:text-top;
